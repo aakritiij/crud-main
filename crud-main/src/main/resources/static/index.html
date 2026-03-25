@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student CRUD</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+        button {
+            padding: 6px 10px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Add Student</h2>
+
+<input id="name" placeholder="Name">
+<input id="email" placeholder="Email">
+<button onclick="add()">Add</button>
+
+<h3>Students</h3>
+<ul id="list"></ul>
+
+</div>
+
+<script>
+const API = "http://localhost:8080/students";
+
+function load() {
+    fetch(API)
+    .then(r => r.json())
+    .then(data => {
+        let list = document.getElementById("list");
+        list.innerHTML = "";
+        data.forEach(s => {
+            list.innerHTML += `<li>${s.name} (${s.email}) 
+            <button onclick="del(${s.id})">X</button></li>`;
+        });
+    });
+}
+
+function add() {
+    fetch(API, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value
+        })
+    }).then(load);
+}
+
+function del(id) {
+    fetch(API + "/" + id, { method: "DELETE" })
+    .then(load);
+}
+
+load();
+</script>
+
+</body>
+</html>
