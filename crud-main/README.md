@@ -86,8 +86,3 @@ src/
 - Applied layered architecture
 - Performed CRUD operations successfully
 - Built a minimal UI for interaction
-
----
-
-## 👤 Author
-Prateek Yadav
